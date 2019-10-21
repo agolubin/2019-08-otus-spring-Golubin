@@ -1,15 +1,12 @@
 package ru.otus.spring01.service;
 
 import ru.otus.spring01.domain.Student;
-import ru.otus.spring01.domain.Question;
-
-import java.util.Scanner;
 
 public class ExamServiceImpl implements ExamService {
 
-    public Student student;
-    public QuestionService questionService;
-    public ConsoleService console;
+    private Student student;
+    private QuestionService questionService;
+    private ConsoleService console;
     public void  setStudent (Student student){
         this.student = student;
     };
@@ -31,19 +28,14 @@ public class ExamServiceImpl implements ExamService {
     public ExamServiceImpl() {
     }
 
-    public Integer testing() {
-      Scanner scanner = new Scanner(System.in);
-      student.name = console.askName(scanner);
-      Integer res = 0;
+    public void testing() {
+      this.student = console.askName();
+      int res = 0;
       for (int i = 0; i < questionService.getCountQuestion(); i++){
-        if (console.askQuestion(scanner, questionService.getByNumber(i), i+1)) {
+        if (console.askQuestion( questionService.getByNumber(i), i+1)) {
             res++;
         }
       }
-    System.out.println("Количество правильных ответов");
-    System.out.println(String.valueOf(res));
-    return res;
-
-
+    console.printResult(res);
     }
 }

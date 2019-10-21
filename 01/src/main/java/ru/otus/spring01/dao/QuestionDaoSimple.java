@@ -5,12 +5,12 @@ import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import ru.otus.spring01.domain.Question;
 
-import java.io.FileReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class QuestionDaoSimple implements QuestionDao {
 
-    Question[] questions;
+    private ArrayList<Question> questions;
 
     public QuestionDaoSimple(String fileName) {
         CSVReader csvReader;
@@ -22,19 +22,24 @@ public class QuestionDaoSimple implements QuestionDao {
                     .build();
             String[] nextLine;
             int index = 0;
-            this.questions = new Question[5];
+            this.questions = new ArrayList<Question>();
             while ((nextLine = csvReader.readNext()) != null) {
                 for (String string : nextLine){
                     String[] value;
                     value = parser.parseLine(string);
                     String[] answers = new String[3];
-                    answers[0] = value[1];
-                    answers[1] = value[2];
-                    answers[2] = value[3];
+                    try{
+                        answers[0] = value[1];
+                        answers[1] = value[2];
+                        answers[2] = value[3];
+                        Question question = new Question(value[0], answers, Integer.valueOf(value[4]));
+                        questions.add(question);
+                        index++;
+                    }
+                     catch (Exception e) {
+                            System.out.println("Ошибка загрузки вопрос №" + String.valueOf(index+1));
+                    }
 
-                    Question question = new Question(value[0], answers, Integer.valueOf(value[4]));
-                    questions[index] = question;
-                    index++;
                 }
             }
         } catch (Exception e) {
@@ -42,11 +47,11 @@ public class QuestionDaoSimple implements QuestionDao {
         }
     }
 
-    public Question findByNumber(Integer number) {
-      return questions[number];
+    public Question findByNumber(int number) {
+      return questions.get(number);
     }
 
-    public Integer getCountQuestion(){
-      return questions.length;
+    public int getCountQuestion(){
+      return questions.size();
     }
 }

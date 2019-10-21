@@ -2,10 +2,10 @@ package ru.otus.spring01.domain;
 
 public class Student {
 
-    public String name;
+    private  String name;
     private int rightAnswers;
 
-    public Student() {
+    private Student() {
     }
 
     public Student(String name) {
