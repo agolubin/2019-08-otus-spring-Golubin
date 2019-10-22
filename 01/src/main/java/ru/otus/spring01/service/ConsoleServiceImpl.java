@@ -7,11 +7,9 @@ import ru.otus.spring01.domain.Student;
 public class ConsoleServiceImpl implements ConsoleService {
 
     private Scanner scanner;
-    private System system;
 
-    public ConsoleServiceImpl(Scanner scanner, System system){
+    public ConsoleServiceImpl(Scanner scanner){
         this.scanner = scanner;
-        this.system  = system;
     }
 
     public ConsoleServiceImpl(){
