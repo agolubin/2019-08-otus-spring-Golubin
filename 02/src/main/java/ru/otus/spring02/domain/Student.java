@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 public class Student {
 
     private  String name;
-    private int rightAnswers;
 
     private Student() {
     }

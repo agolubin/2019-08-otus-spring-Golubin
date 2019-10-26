@@ -33,7 +33,7 @@ public class ExamServiceImpl implements ExamService {
     }
 
     public void testing() {
-      this.student = console.askName();
+      this.student = console.askStudentInfo();
       int res = 0;
       for (int i = 0; i < questionService.getCountQuestion(); i++){
         if (console.askQuestion( questionService.getByNumber(i), i+1)) {

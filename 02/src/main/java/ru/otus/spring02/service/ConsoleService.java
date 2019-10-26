@@ -5,7 +5,7 @@ import ru.otus.spring02.domain.Student;
 
 public interface ConsoleService {
 
-    Student askName();
+    Student askStudentInfo();
     boolean askQuestion(Question question, int number);
     public void printResult(int rightAnswer) ;
 }

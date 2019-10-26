@@ -25,7 +25,7 @@ public class ConsoleServiceImpl implements ConsoleService {
     @Value("${lang.locale}")
     private Locale locale;
 
-    public Student askName() {
+    public Student askStudentInfo() {
       System.out.println(
               messageSource.getMessage(
                       "exam.name",
