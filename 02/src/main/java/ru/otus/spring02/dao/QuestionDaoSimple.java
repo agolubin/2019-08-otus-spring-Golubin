@@ -10,17 +10,17 @@ import ru.otus.spring02.domain.Question;
 
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Locale;
 
 @Repository
 public class QuestionDaoSimple implements QuestionDao {
 
     private ArrayList<Question> questions;
 
-    public QuestionDaoSimple(@Value("${file.name}") String fileName) {
+    public QuestionDaoSimple(@Value("${file.name}") String fileName, @Value("${lang.locale}")Locale locale) {
         CSVReader csvReader;
         try {
-            String path = getClass().getClassLoader().getResource(fileName).toString();
-            csvReader = new CSVReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream(fileName)));
+            csvReader = new CSVReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream(fileName+"_"+locale.toString()+".csv")));
             char separator = ';';
             CSVParser parser = new CSVParserBuilder().withSeparator(separator)
                     .build();

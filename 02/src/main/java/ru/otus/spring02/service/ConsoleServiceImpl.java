@@ -13,53 +13,55 @@ import ru.otus.spring02.domain.Student;
 @Service
 public class ConsoleServiceImpl implements ConsoleService {
 
-    private Scanner scanner;
+    private MessageSource messageSource;
 
-    public ConsoleServiceImpl(){
-        this.scanner = new Scanner(System.in);
-    }
+    private IOService ioService;
 
     @Autowired
-    private MessageSource messageSource;
+    public ConsoleServiceImpl(IOService ioService, MessageSource messageSource) {
+        this.ioService = ioService;
+        this.messageSource = messageSource;
+    }
+
 
     @Value("${lang.locale}")
     private Locale locale;
 
     public Student askStudentInfo() {
-      System.out.println(
+        ioService.printOut(
               messageSource.getMessage(
                       "exam.name",
                       null,
                        locale
               ));
-      return new Student(scanner.nextLine());
+      return new Student(ioService.readString());
     }
 
     public boolean askQuestion( Question question, int number){
-        System.out.println(
+        ioService.printOut(
                 messageSource.getMessage(
                         "exam.question",
                         new String [] {String.valueOf(number)},
                         locale
                 ));
 
-      System.out.println(question.topic);
+        ioService.printOut(question.topic);
       for (int j = 0; j < question.getPossibleAnswer().length; j++) {
-            System.out.println(String.valueOf(j+1) + " - " + question.getPossibleAnswer()[j]);
+          ioService.printOut(String.valueOf(j+1) + " - " + question.getPossibleAnswer()[j]);
       }
 
-      int answer = scanner.nextInt();
+      int answer = ioService.readInt();
       return (answer == question.getRightAnswer());
    }
 
     public void printResult(int rightAnswer) {
-        System.out.println(
+        ioService.printOut(
                 messageSource.getMessage(
                         "exam.result",
                         null,
                         locale
                 ));
-        System.out.println(String.valueOf(rightAnswer));
+        ioService.printOut(String.valueOf(rightAnswer));
     }
 
 }
