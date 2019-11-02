@@ -1,6 +1,8 @@
 package ru.otus.spring02;
 
 import com.opencsv.CSVParserBuilder;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.*;
 
@@ -26,6 +28,7 @@ public class Main {
         ms.setDefaultEncoding("UTF-8");
         return ms;
     }
+
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Main.class);
         ExamService exam = context.getBean(ExamService.class);
