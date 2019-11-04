@@ -17,23 +17,9 @@ public class Spring03Application {
 
         public static void main(String[] args) {
         ApplicationContext context = SpringApplication.run(Spring03Application.class, args);
-/*
-        MessageSource msg = context.getBean(MessageSource.class);
-        Locale locale = new Locale("Ru_ru");
-        System.out.println(
-              msg.getMessage(
-                      "exam.name",
-                      null,
-                      locale
-              ));
-*/
 
         ExamService exam = context.getBean(ExamService.class);
         exam.testing();
 
-
-
-//        ApplicationSettings settings = ctx.getBean(ApplicationSettings.class);
-//        System.out.println(settings.fileName);
         }
 }
