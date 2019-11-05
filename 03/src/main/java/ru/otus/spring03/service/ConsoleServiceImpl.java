@@ -28,28 +28,24 @@ public class ConsoleServiceImpl implements ConsoleService {
     }
 
     public Student askStudentInfo() {
-        ioService.printOut("Введите ФИО");
-        /*ioService.printOut(
+        ioService.printOut(
               messageSource.getMessage(
                       "exam.name",
                       null,
                       settings.locale
               ));
 
-         */
       return new Student(ioService.readString());
     }
 
     public boolean askQuestion( Question question, int number){
-        ioService.printOut("Вопрос ");
-        /*
         ioService.printOut(
                 messageSource.getMessage(
                         "exam.question",
                         new String [] {String.valueOf(number)},
                         settings.locale
                 ));
-*/
+
         ioService.printOut(question.topic);
       for (int j = 0; j < question.getPossibleAnswer().length; j++) {
           ioService.printOut(String.valueOf(j+1) + " - " + question.getPossibleAnswer()[j]);
@@ -60,17 +56,13 @@ public class ConsoleServiceImpl implements ConsoleService {
    }
 
     public void printResult(int rightAnswer) {
-        ioService.printOut("Результат ");
-        /*
         ioService.printOut(
                 messageSource.getMessage(
                         "exam.result",
                         null,
                         settings.locale
                 ));
-
-         */
-        ioService.printOut(String.valueOf(rightAnswer));
+      ioService.printOut(String.valueOf(rightAnswer));
     }
 
 }
