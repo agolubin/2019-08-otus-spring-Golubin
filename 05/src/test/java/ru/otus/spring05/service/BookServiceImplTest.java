@@ -3,13 +3,17 @@ package ru.otus.spring05.service;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatcher;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.MessageSource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import static org.mockito.ArgumentMatchers.any;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 
 import ru.otus.spring05.dao.AuthorDao;
@@ -29,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 class BookServiceImplTest {
 
-    private static final int DEFAULT_GENRE_NAME_ID = 1;
+    private static final int DEFAULT_GENRE_ID = 1;
     private static final int DEFAULT_BOOK_ID = 0;
     private static final String DEFAULT_GENRE_NAME = "Роман";
     private static final int DEFAULT_AUTHOR_ID = 1;
@@ -66,7 +70,7 @@ class BookServiceImplTest {
         Mockito.when(console.bookAuthorSurNameIn()).thenReturn(DEFAULT_AUTHOR_SURNAME);
         Author author = new Author(DEFAULT_AUTHOR_ID, DEFAULT_AUTHOR_NAME, DEFAULT_AUTHOR_SURNAME);
         Mockito.when(authorDao.getAuthorByAuthor(any())).thenReturn(author);
-        Genre genre = new Genre(DEFAULT_GENRE_NAME_ID, DEFAULT_GENRE_NAME);
+        Genre genre = new Genre(DEFAULT_GENRE_ID, DEFAULT_GENRE_NAME);
         Mockito.when(genreDao.getGenreByGenre(any())).thenReturn(genre);
 
         Mockito.when(console.bookNameIn()).thenReturn(DEAULT_BOOK_NAME);
@@ -75,8 +79,12 @@ class BookServiceImplTest {
 
         bookService.insert();
 
-        verify(bookDao, Mockito.times(1)).insert(book);
+        ArgumentCaptor<Book> argument = ArgumentCaptor.forClass(Book.class);
 
+        verify(bookDao, Mockito.times(1)).insert(argument.capture());
+        assertEquals(DEAULT_BOOK_NAME, argument.getValue().getName());
+        assertEquals(DEFAULT_AUTHOR_ID, argument.getValue().getAuthorID());
+        assertEquals(DEFAULT_GENRE_ID, argument.getValue().getGenreID());
     }
 
 }

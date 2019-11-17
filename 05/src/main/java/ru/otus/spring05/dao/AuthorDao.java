@@ -10,7 +10,6 @@ public interface AuthorDao {
 
     Author insert(Author author) throws SQLException;
     void update(Author author);
-    //void delete(int authorID);
     void deleteByID(int authorID);
     int checkByID(int authorID);
     List findAll();

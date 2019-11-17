@@ -83,16 +83,7 @@ public class BookDaoJdbc implements BookDao {
                             "join genre\n" +
                             "on genre.genreID = book.genreID", new BookMapper2());
     }
-/*
-    @Override
-    public Book getByID(int bookID) {
-        Map<String, Object> params = Collections.singletonMap("bookID", bookID);
-        return namedParameterJdbcOperations.queryForObject(
-                "select * from book where bookID = :bookID", params, new BookMapper()
-        );
-    }
 
-*/
     public int checkByID(int bookID) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("bookID", bookID);

@@ -12,7 +12,6 @@ public interface BookDao {
     void deleteByID(int bookID);
     int checkByID(int bookID);
     List findAll();
-//    Book getByID(int bookID);
     Book getBookByBook(Book book);
     int countByName(Book author);
 }
