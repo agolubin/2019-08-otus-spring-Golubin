@@ -1,0 +1,1 @@
+insert into book(bookID, authorID, genreID, name) values(1, 1, 1, 'Война и мир');
