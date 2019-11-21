@@ -22,7 +22,7 @@ public class IOServiceImpl implements IOService {
         return scanner.nextLine();
     }
 
-    public int readInt() {
-        return scanner.nextInt();
+    public Long readLong() {
+        return scanner.nextLong();
     }
 }

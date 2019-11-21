@@ -2,61 +2,61 @@ package ru.otus.spring05.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.otus.spring05.Exceptions.AuthorExistException;
 import ru.otus.spring05.dao.AuthorDao;
 import ru.otus.spring05.domain.Author;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
 
-    private AuthorDao dao;
-    private ConsoleService console;
+    private final AuthorDao dao;
+    private final ConsoleService consoleService;
 
     @Autowired
-    public AuthorServiceImpl(AuthorDao dao, ConsoleService console) {
+    public AuthorServiceImpl(AuthorDao dao, ConsoleService consoleService) {
         this.dao     = dao;
-        this.console = console;
+        this.consoleService = consoleService;
     }
 
     public void insert() {
-        Author author = console.authorInsert();
+        Author author = consoleService.authorInsert();
         if (author != null){
             try {
                 dao.insert(author);
-            } catch (SQLException e) {
-                console.authorErrorInsert();
+            } catch (AuthorExistException e) {
+                consoleService.authorErrorInsert(e.getMessage());
             }
         }
         else{
-            console.authorErrorInsert();
+            consoleService.authorErrorInsert("");
         }
     }
 
     public void update() {
-        Author author = console.authorUpdate();
+        Author author = consoleService.authorUpdate();
         if (author != null){
             dao.update(author);
         }
         else{
-            console.authorErrorUpdate();
+            consoleService.authorErrorUpdate();
         }
     }
     public void delete() {
-        int authorID = console.authorDelete();
+        Long authorID = consoleService.authorDelete();
         if (authorID > 0){
             dao.deleteByID(authorID);
         }
         else{
-            console.authorErrorDelete();
+            consoleService.authorErrorDelete();
         }
     }
 
     public void findAll() {
         List<Author> list = new ArrayList<>();
         list = dao.findAll();
-         console.authorFindAll(list);
+         consoleService.authorFindAll(list);
     }
 }

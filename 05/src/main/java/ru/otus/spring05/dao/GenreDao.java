@@ -1,5 +1,6 @@
 package ru.otus.spring05.dao;
 
+import ru.otus.spring05.Exceptions.GenreExistException;
 import ru.otus.spring05.domain.Genre;
 
 import java.sql.SQLException;
@@ -7,12 +8,11 @@ import java.util.List;
 
 public interface GenreDao {
 
-    Genre insert(Genre genre) throws SQLException;
+    Genre insert(Genre genre) throws GenreExistException;
     void update(Genre genre);
-    void deleteByID(int genreID);
-    int checkByID(int genreID);
-    List findAll();
-    Genre getByID(int genreID);
-    Genre getGenreByGenre(Genre genre);
-    int countByName(Genre genre);
+    void deleteByID(Long genreID);
+    int checkByID(Long genreID);
+    List<Genre> findAll();
+    Genre getGenreByName(String name);
+    int countByName(String name);
 }

@@ -1,13 +1,11 @@
 package ru.otus.spring05.dao;
 
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
-import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
+import ru.otus.spring05.Exceptions.AuthorExistException;
 import ru.otus.spring05.domain.Author;
 
 import java.sql.ResultSet;
@@ -25,8 +23,8 @@ public class AuthorDaoJdbc implements AuthorDao {
     }
 
     @Override
-    public Author insert(Author author) throws SQLException{
-        int count = countByName(author);
+    public Author insert(Author author) throws AuthorExistException {
+        int count = countByName(author.getName(), author.getSurName());
 
         if (count == 0){
             MapSqlParameterSource params = new MapSqlParameterSource();
@@ -37,12 +35,12 @@ public class AuthorDaoJdbc implements AuthorDao {
             namedParameterJdbcOperations.update(
                     "insert into author (`surName`, `name`) values (:surName, :name)", params, key
             );
-            author.setAuthorID((int) key.getKey());
+            author.setAuthorID((Long) key.getKey());
             return author;
         }
         else
         {
-            return getAuthorByAuthor(author);
+            throw new AuthorExistException("Автор " + author.getName() + " " + author.getSurName() + " уже добавлен в базу!");
         }
 
     }
@@ -60,7 +58,7 @@ public class AuthorDaoJdbc implements AuthorDao {
     }
 
     @Override
-    public void deleteByID(int authorID) {
+    public void deleteByID(Long authorID) {
         int res = checkByID(authorID);
         if (res == 1) {
             Map<String, Object> params = Collections.singletonMap("authorID", authorID);
@@ -71,30 +69,22 @@ public class AuthorDaoJdbc implements AuthorDao {
     }
 
     @Override
-    public List findAll() {
+    public List <Author> findAll() {
             return namedParameterJdbcOperations.getJdbcOperations().query("select * from AUTHOR", new AuthorMapper());
     }
 
     @Override
-    public Author getByID(int authorID) {
-        Map<String, Object> params = Collections.singletonMap("authorID", authorID);
-        return namedParameterJdbcOperations.queryForObject(
-                "select * from author where authorID = :authorID", params, new AuthorMapper()
-        );
-    }
-
-    @Override
-    public int countByName(Author author) {
+    public int countByName(String name, String surName) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("surName", author.getSurName());
-        params.put("name", author.getName());
+        params.put("surName", surName);
+        params.put("name", name);
         int res = namedParameterJdbcOperations.queryForObject(
                 "select count(*) from author where name = :name and surname = :surName", params, Integer.class
         );
         return res;
     }
 
-    public int checkByID(int authorID) {
+    public int checkByID(Long authorID) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("authorID", authorID);
         int res = namedParameterJdbcOperations.queryForObject(
@@ -104,11 +94,11 @@ public class AuthorDaoJdbc implements AuthorDao {
     }
 
     @Override
-    public Author getAuthorByAuthor(Author author) {
+    public Author getAuthorByName(String name, String SurName) {
         try {
             Map<String, Object> params = new HashMap<String, Object>();
-            params.put("surName", author.getSurName());
-            params.put("name", author.getName());
+            params.put("surName", SurName);
+            params.put("name", name);
             return namedParameterJdbcOperations.queryForObject(
                     "select * from author where name = :name and surname = :surName", params, new AuthorMapper()
             );
@@ -122,7 +112,7 @@ public class AuthorDaoJdbc implements AuthorDao {
 
         @Override
         public Author mapRow(ResultSet resultSet, int i) throws SQLException {
-            int authorID   = resultSet.getInt("authorID");
+            Long authorID  = resultSet.getLong("authorID");
             String name    = resultSet.getString("name");
             String surName = resultSet.getString("surName");
             return new Author(authorID, name, surName);

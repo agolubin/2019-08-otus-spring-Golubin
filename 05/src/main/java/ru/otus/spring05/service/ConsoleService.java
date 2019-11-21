@@ -8,35 +8,35 @@ import java.util.List;
 
 public interface ConsoleService {
 
-    void authorErrorInsert();
+    void authorErrorInsert(String message);
     void authorErrorUpdate();
     void authorErrorDelete();
     void authorFindAll(List<Author> list);
     Author authorInsert();
     Author authorUpdate();
-    int authorDelete();
+    Long authorDelete();
 
-    void genreErrorInsert();
+    void genreErrorInsert(String message);
     void genreErrorUpdate();
     void genreErrorDelete();
     void genreFindAll(List<Genre> list);
     Genre genreInsert();
     Genre genreUpdate();
-    int genreDelete();
+    Long genreDelete();
 
-    void bookErrorInsert();
+    void bookErrorInsert(String message);
     void bookErrorUpdate();
     void bookErrorDelete();
     void bookFindAll(List<Book> list);
     Book bookInsert();
     Book bookUpdate();
-    int bookDelete();
+    Long bookDelete();
 
     String bookAuthorNameIn();
     String bookAuthorSurNameIn();
     String bookGenreIn();
     String bookNameIn();
-    int bookBookID();
+    Long bookBookID();
 
     void printError(String errorName);
 }

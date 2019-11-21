@@ -45,7 +45,7 @@ public class ConsoleServiceImpl implements ConsoleService {
               ));
         String surName = ioService.readString();
 
-        return new Author(0, name, surName);
+        return new Author(0L, name, surName);
     }
 
     public Author authorUpdate() {
@@ -56,7 +56,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                         null,
                         settings.locale
                 ));
-        int id = ioService.readInt();
+        Long id = ioService.readLong();
         ioService.readString();
 
         ioService.printOut(
@@ -78,7 +78,7 @@ public class ConsoleServiceImpl implements ConsoleService {
         return new Author(id, name, surName);
     }
 
-    public int authorDelete() {
+    public Long authorDelete() {
 
         ioService.printOut(
                 messageSource.getMessage(
@@ -86,7 +86,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                         null,
                         settings.locale
                 ));
-        int id = ioService.readInt();
+        Long id = ioService.readLong();
 
         return id;
     }
@@ -116,13 +116,13 @@ public class ConsoleServiceImpl implements ConsoleService {
     }
 
 
-    public void authorErrorInsert() {
+    public void authorErrorInsert(String message) {
         ioService.printOut(
                 messageSource.getMessage(
                         "author.errorInsert",
                         null,
                         settings.locale
-                ));
+                )+ message);
     }
 
     public void authorErrorUpdate() {
@@ -153,7 +153,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 ));
         String name = ioService.readString();
 
-        return new Genre(0, name);
+        return new Genre(0L, name);
     }
 
     public Genre genreUpdate() {
@@ -164,7 +164,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                         null,
                         settings.locale
                 ));
-        int id = ioService.readInt();
+        Long id = ioService.readLong();
         ioService.readString();
 
         ioService.printOut(
@@ -178,7 +178,7 @@ public class ConsoleServiceImpl implements ConsoleService {
         return new Genre(id, name);
     }
 
-    public int genreDelete() {
+    public Long genreDelete() {
 
         ioService.printOut(
                 messageSource.getMessage(
@@ -186,7 +186,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                         null,
                         settings.locale
                 ));
-        int id = ioService.readInt();
+        Long id = ioService.readLong();
 
         return id;
     }
@@ -210,13 +210,13 @@ public class ConsoleServiceImpl implements ConsoleService {
     }
 
 
-    public void genreErrorInsert() {
+    public void genreErrorInsert(String message) {
         ioService.printOut(
                 messageSource.getMessage(
                         "genre.errorInsert",
                         null,
                         settings.locale
-                ));
+                )+ " " + message);
     }
 
     public void genreErrorUpdate() {
@@ -272,7 +272,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 ));
         String genreName = ioService.readString();
 
-        return new Book(0, name, authorName, authorSurName, genreName);
+        return new Book(0L, new Author(0L, authorName, authorSurName), new Genre(0L, genreName), name);
     }
 
     public String bookAuthorNameIn() {
@@ -328,7 +328,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 ));
     }
 
-    public int bookBookID() {
+    public Long bookBookID() {
         ioService.printOut(
                 messageSource.getMessage(
                         "book.authorName",
@@ -336,7 +336,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                         settings.locale
                 ));
 
-        return ioService.readInt();
+        return ioService.readLong();
     }
 
     public Book bookUpdate() {
@@ -347,7 +347,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                         null,
                         settings.locale
                 ));
-        int id = ioService.readInt();
+        Long id = ioService.readLong();
         ioService.readString();
 
         ioService.printOut(
@@ -382,10 +382,10 @@ public class ConsoleServiceImpl implements ConsoleService {
                 ));
         String genreName = ioService.readString();
 
-        return new Book(id, name, authorName, authorSurName, genreName);
+        return new Book(id, new Author(0L, authorName, authorSurName), new Genre( 0L, genreName), name);
     }
 
-    public int bookDelete() {
+    public Long bookDelete() {
 
         ioService.printOut(
                 messageSource.getMessage(
@@ -393,7 +393,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                         null,
                         settings.locale
                 ));
-        int id = ioService.readInt();
+        Long id = ioService.readLong();
 
         return id;
     }
@@ -412,7 +412,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                             "book.author2",
                             null,
                             settings.locale
-                    ) + book.getAuthorName() + " " + book.getAuthorSurName());
+                    ) + book.getAuthor().getName() + " " + book.getAuthor().getSurName());
             ioService.printOut(
                     messageSource.getMessage(
                             "book.name2",
@@ -424,18 +424,18 @@ public class ConsoleServiceImpl implements ConsoleService {
                             "book.genre2",
                             null,
                             settings.locale
-                    ) + book.getGenreName());
+                    ) + book.getGenre().getName());
         }
     }
 
 
-    public void bookErrorInsert() {
+    public void bookErrorInsert(String message) {
         ioService.printOut(
                 messageSource.getMessage(
                         "book.errorInsert",
                         null,
                         settings.locale
-                ));
+                ) + " " + message);
     }
 
     public void bookErrorUpdate() {

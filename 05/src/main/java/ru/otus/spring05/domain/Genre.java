@@ -7,10 +7,10 @@ import lombok.Setter;
 @Getter
 public class Genre {
 
-    private int genreID;
+    private Long genreID;
     private final String name;
 
-    public Genre(int genreID, String name) {
+    public Genre(Long genreID, String name) {
         this.genreID = genreID;
         this.name    = name;
     }

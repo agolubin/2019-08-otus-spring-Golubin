@@ -2,6 +2,7 @@ package ru.otus.spring05.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.otus.spring05.Exceptions.GenreExistException;
 import ru.otus.spring05.dao.GenreDao;
 import ru.otus.spring05.domain.Genre;
 
@@ -13,50 +14,50 @@ import java.util.List;
 public class GenreServiceImpl implements GenreService {
 
     private GenreDao dao;
-    private ConsoleService console;
+    private ConsoleService consoleService;
 
     @Autowired
-    public GenreServiceImpl(GenreDao dao, ConsoleService console) {
+    public GenreServiceImpl(GenreDao dao, ConsoleService consoleService) {
         this.dao     = dao;
-        this.console = console;
+        this.consoleService = consoleService;
     }
 
     public void insert() {
-        Genre genre = console.genreInsert();
+        Genre genre = consoleService.genreInsert();
         if (genre != null){
             try {
                 dao.insert(genre);
-            } catch (SQLException e) {
-                console.genreErrorInsert();
+            } catch (GenreExistException e) {
+                consoleService.genreErrorInsert(e.getMessage());
             }
         }
         else{
-            console.genreErrorInsert();
+            consoleService.genreErrorInsert("");
         }
     }
 
     public void update() {
-        Genre genre = console.genreUpdate();
+        Genre genre = consoleService.genreUpdate();
         if (genre != null){
             dao.update(genre);
         }
         else{
-            console.genreErrorUpdate();
+            consoleService.genreErrorUpdate();
         }
     }
     public void delete() {
-        int genreID = console.genreDelete();
+        Long genreID = consoleService.genreDelete();
         if (genreID > 0){
             dao.deleteByID(genreID);
         }
         else{
-            console.genreErrorDelete();
+            consoleService.genreErrorDelete();
         }
     }
 
     public void findAll() {
         List<Genre> list = new ArrayList<>();
         list = dao.findAll();
-         console.genreFindAll(list);
+         consoleService.genreFindAll(list);
     }
 }

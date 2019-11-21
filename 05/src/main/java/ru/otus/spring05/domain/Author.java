@@ -7,11 +7,11 @@ import lombok.Setter;
 @Setter
 public class Author {
 
-    private int authorID;
+    private Long authorID;
     private final String name;
     private final String surName;
 
-    public Author(int authorID, String name, String surName) {
+    public Author(Long authorID, String name, String surName) {
         this.authorID = authorID;
         this.name     = name;
         this.surName  = surName;

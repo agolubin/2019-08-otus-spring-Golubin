@@ -2,6 +2,7 @@ package ru.otus.spring05.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.otus.spring05.Exceptions.BookExistException;
 import ru.otus.spring05.dao.AuthorDao;
 import ru.otus.spring05.dao.BookDao;
 import ru.otus.spring05.dao.GenreDao;
@@ -19,94 +20,90 @@ public class BookServiceImpl implements BookService {
     private BookDao dao;
     private AuthorDao authorDao;
     private GenreDao genreDao;
-    private ConsoleService console;
+    private final ConsoleService consoleService;
 
     @Autowired
-    public BookServiceImpl(BookDao dao, AuthorDao authorDao, GenreDao genreDao, ConsoleService console) {
+    public BookServiceImpl(BookDao dao, AuthorDao authorDao, GenreDao genreDao, ConsoleService consoleService) {
         this.dao       = dao;
         this.authorDao = authorDao;
         this.genreDao  = genreDao;
-        this.console   = console;
+        this.consoleService = consoleService;
     }
 
     public void insert() {
-        String authorName    = console.bookAuthorNameIn();
-        String authorSurName = console.bookAuthorSurNameIn();
+        String authorName    = consoleService.bookAuthorNameIn();
+        String authorSurName = consoleService.bookAuthorSurNameIn();
 
-        Author authorIn = new Author(0, authorName, authorSurName);
-        Author author = authorDao.getAuthorByAuthor(authorIn);
+        Author author = authorDao.getAuthorByName(authorName, authorSurName);
 
         if (author == null){
-            console.printError("book.errorAuthorExist");
+            consoleService.printError("book.errorAuthorExist");
             return;
         }
 
-        String genreName    = console.bookGenreIn();
+        String genreName    = consoleService.bookGenreIn();
 
-        Genre genreIn = new Genre(0, genreName);
-        Genre genre = genreDao.getGenreByGenre(genreIn);
+        Genre genre = genreDao.getGenreByName(genreName);
 
         if (genre == null){
-            console.printError("book.errorGenreExist");
+            consoleService.printError("book.errorGenreExist");
             return;
         }
 
-        String bookName = console.bookNameIn();
+        String bookName = consoleService.bookNameIn();
 
-        Book book = new Book(0,author.getAuthorID(), genre.getGenreID(), bookName);
+        Book book = new Book(0L, author, genre, bookName);
         try {
              dao.insert(book);
-        } catch (SQLException e) {
-             console.bookErrorInsert();
+        } catch (BookExistException e) {
+             consoleService.bookErrorInsert(e.getMessage());
         }
     }
 
     public void update() {
-        int bookid = console.bookBookID();
-        int bookExist = dao.checkByID(bookid);
+        Long bookid = consoleService.bookBookID();
+        int bookExist = dao.countByID(bookid);
 
         if (bookExist == 0){
-            console.printError("book.errorBookExist");
+            consoleService.printError("book.errorBookExist");
             return;
         }
 
-        String authorName    = console.bookAuthorNameIn();
-        String authorSurName = console.bookAuthorSurNameIn();
+        String authorName    = consoleService.bookAuthorNameIn();
+        String authorSurName = consoleService.bookAuthorSurNameIn();
 
-        Author authorIn = new Author(0, authorName, authorSurName);
-        Author author = authorDao.getAuthorByAuthor(authorIn);
+        Author author = authorDao.getAuthorByName(authorName, authorSurName);
 
         if (author == null){
-            console.printError("book.errorAuthorExist");
+            consoleService.printError("book.errorAuthorExist");
             return;
         }
 
-        String genreName    = console.bookGenreIn();
+        String genreName    = consoleService.bookGenreIn();
 
-        Genre genreIn = new Genre(0, genreName);
-        Genre genre = genreDao.getGenreByGenre(genreIn);
+        Genre genre = genreDao.getGenreByName(genreName);
 
         if (genre == null){
-            console.printError("book.errorGenreExist");
+            consoleService.printError("book.errorGenreExist");
             return;
         }
 
-        String bookName = console.bookNameIn();
+        String bookName = consoleService.bookNameIn();
 
-        Book book = new Book(0,author.getAuthorID(), genre.getGenreID(), bookName);
+        Book book = new Book(0L, author, genre, bookName);
         try {
             dao.insert(book);
-        } catch (SQLException e) {
-            console.bookErrorInsert();
+        } catch (BookExistException e) {
+            consoleService.bookErrorInsert(e.getMessage());
         }    }
 
 
     public void delete() {
-        int bookid = console.bookBookID();
-        int bookExist = dao.checkByID(bookid);
+        Long bookid = consoleService.bookBookID();
+        int bookExist = dao.countByID(bookid);
 
         if (bookExist == 0){
-             console.printError("book.errorBookExist");
+             consoleService.printError("book.errorBookExist");
              return;
         }
         else
@@ -118,6 +115,6 @@ public class BookServiceImpl implements BookService {
     public void findAll() {
         List<Book> list = new ArrayList<>();
         list = dao.findAll();
-         console.bookFindAll(list);
+         consoleService.bookFindAll(list);
     }
 }

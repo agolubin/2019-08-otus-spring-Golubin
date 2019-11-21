@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import ru.otus.spring05.Exceptions.BookExistException;
+import ru.otus.spring05.domain.Author;
 import ru.otus.spring05.domain.Book;
+import ru.otus.spring05.domain.Genre;
 
 import java.sql.SQLException;
 
@@ -20,10 +23,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @Import(BookDaoJdbc.class)
 class BookDaoJdbcTest {
 
-    private static final int NEW_BOOK_ID = 2;
+    private static final Long NEW_BOOK_ID = 2L;
     private static final int BOOK_COUNT_NEW_BOOK = 1;
     private static final int BOOK_COUNT_BY_ID = 1;
-    private static final int DEFAULT_BOOK_ID = 1;
+    private static final Long DEFAULT_BOOK_ID = 1L;
+    private static final Long DEFAULT_GENRE_ID = 2L;
+    private static final Long DEFAULT_AUTHOR_ID = 2L;
     private static final int BOOK_COUNT_DELETE_BOOK = 0;
     private static final String DEFAULT_BOOK_NAME = "Война и мир";
 
@@ -31,16 +36,17 @@ class BookDaoJdbcTest {
     private BookDaoJdbc bookDaoJdbc;
     @Test
     @DisplayName("должен корректно добавлять в базу книгу")
-    void insert() throws SQLException {
-        Book book  = new Book(0, 2, 2, DEFAULT_BOOK_NAME);
-        try {
-            Book book2 = bookDaoJdbc.insert(book);
-        }
-        catch (SQLException e)
-        {
+    void insert() throws BookExistException{
+        Book book  = new Book(0L, new Author(DEFAULT_AUTHOR_ID, "", ""), new Genre(DEFAULT_GENRE_ID, ""), DEFAULT_BOOK_NAME);
+        Book book2 = bookDaoJdbc.insert(book);
+        assertThat(bookDaoJdbc.getBookByID(NEW_BOOK_ID)).isEqualTo(BOOK_COUNT_NEW_BOOK);
 
-        }
-        assertThat(bookDaoJdbc.checkByID(NEW_BOOK_ID)).isEqualTo(BOOK_COUNT_NEW_BOOK);
+        Book book3 = bookDaoJdbc.getBookByID(book2.getBookID());
+        Author author = book3.getAuthor();
+        Genre genre   = book3.getGenre();
+        assertThat(book3).hasFieldOrPropertyWithValue("bookID", DEFAULT_BOOK_ID);
+        assertThat(genre).hasFieldOrPropertyWithValue("genreID", DEFAULT_GENRE_ID);
+        assertThat(author).hasFieldOrPropertyWithValue("authorID", DEFAULT_AUTHOR_ID);
 
     }
 
@@ -48,20 +54,20 @@ class BookDaoJdbcTest {
     @DisplayName("должен корректно удалять из базы книгу")
     void deleteByID() {
         bookDaoJdbc.deleteByID(DEFAULT_BOOK_ID);
-        assertThat(bookDaoJdbc.checkByID(NEW_BOOK_ID)).isEqualTo(BOOK_COUNT_DELETE_BOOK);
+        assertThat(bookDaoJdbc.countByID(DEFAULT_BOOK_ID)).isEqualTo(BOOK_COUNT_DELETE_BOOK);
     }
 
     @Test
     @DisplayName("должен корректно искать книгу в базе по названию, жанру и автору")
     void getBookByBook() {
-        Book book  = new Book(0, 1, 1, DEFAULT_BOOK_NAME);
-        Book book2 = bookDaoJdbc.getBookByBook(book);
+        Book book  = new Book(0L, new Author(1L, "", ""), new Genre(1L, ""), DEFAULT_BOOK_NAME);
+        Book book2 = bookDaoJdbc.getBookByParam(book.getAuthor().getAuthorID(), book.getGenre().getGenreID(), book.getName());
         assertThat(book2).hasFieldOrPropertyWithValue("bookID", DEFAULT_BOOK_ID);
     }
 
     @Test
     @DisplayName("должен корректно проверять наличие в базе книги по ID книги")
     void checkByID() {
-        assertThat(bookDaoJdbc.checkByID(DEFAULT_BOOK_ID)).isEqualTo(BOOK_COUNT_BY_ID);
+        assertThat(bookDaoJdbc.countByID(DEFAULT_BOOK_ID)).isEqualTo(BOOK_COUNT_BY_ID);
     }
 }
