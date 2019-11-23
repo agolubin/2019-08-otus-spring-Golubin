@@ -63,7 +63,7 @@ public class GenreDaoJdbc implements GenreDao {
 
     @Override
     public void deleteByID(Long genreID) {
-        int res = checkByID(genreID);
+        int res = countByID(genreID);
         if (res == 1) {
             Map<String, Object> params = Collections.singletonMap("genreID", genreID);
             namedParameterJdbcOperations.update(
@@ -87,7 +87,7 @@ public class GenreDaoJdbc implements GenreDao {
         return res;
     }
 
-    public int checkByID(Long genreID) {
+    public int countByID(Long genreID) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("genreID", genreID);
         int res = namedParameterJdbcOperations.queryForObject(

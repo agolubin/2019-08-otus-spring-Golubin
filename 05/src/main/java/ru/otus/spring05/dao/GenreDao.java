@@ -11,7 +11,7 @@ public interface GenreDao {
     Genre insert(Genre genre) throws GenreExistException;
     void update(Genre genre);
     void deleteByID(Long genreID);
-    int checkByID(Long genreID);
+    int countByID(Long genreID);
     List<Genre> findAll();
     Genre getGenreByName(String name);
     int countByName(String name);

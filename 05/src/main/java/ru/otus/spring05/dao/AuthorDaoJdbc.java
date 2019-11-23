@@ -59,7 +59,7 @@ public class AuthorDaoJdbc implements AuthorDao {
 
     @Override
     public void deleteByID(Long authorID) {
-        int res = checkByID(authorID);
+        int res = countByID(authorID);
         if (res == 1) {
             Map<String, Object> params = Collections.singletonMap("authorID", authorID);
             namedParameterJdbcOperations.update(
@@ -84,7 +84,7 @@ public class AuthorDaoJdbc implements AuthorDao {
         return res;
     }
 
-    public int checkByID(Long authorID) {
+    public int countByID(Long authorID) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("authorID", authorID);
         int res = namedParameterJdbcOperations.queryForObject(

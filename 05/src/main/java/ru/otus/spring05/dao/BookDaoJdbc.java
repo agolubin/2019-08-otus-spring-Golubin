@@ -83,7 +83,7 @@ public class BookDaoJdbc implements BookDao {
                             "inner join author\n" +
                             "on author.AuthorID = book.AuthorID\n" +
                             "inner join genre\n" +
-                            "on genre.genreID = book.genreID", new BookMapper2());
+                            "on genre.genreID = book.genreID", new BookWholeMapper());
     }
 
     @Override
@@ -92,7 +92,13 @@ public class BookDaoJdbc implements BookDao {
         params.addValue("bookID", bookID);
 
         return namedParameterJdbcOperations.queryForObject(
-                "select * from book where bookID = :bookID", params, new BookMapper()
+                "select book.BookID, book.Name, " +
+                        "author.Name, author.SurName, genre.Name\n" +
+                        "from book \n" +
+                        "inner join author\n" +
+                        "on author.AuthorID = book.AuthorID\n" +
+                        "inner join genre\n" +
+                        "on genre.genreID = book.genreID", params, new BookWholeMapper()
         );
     }
     public int countByID(Long bookID) {
@@ -141,7 +147,7 @@ public class BookDaoJdbc implements BookDao {
         }
     }
 
-    private static class BookMapper2 implements RowMapper<Book> {
+    private static class BookWholeMapper implements RowMapper<Book> {
 
         @Override
         public Book mapRow(ResultSet resultSet, int i) throws SQLException {

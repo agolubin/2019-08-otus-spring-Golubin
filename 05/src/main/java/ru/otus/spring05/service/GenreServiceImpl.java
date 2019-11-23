@@ -13,8 +13,8 @@ import java.util.List;
 @Service
 public class GenreServiceImpl implements GenreService {
 
-    private GenreDao dao;
-    private ConsoleService consoleService;
+    private final GenreDao dao;
+    private final ConsoleService consoleService;
 
     @Autowired
     public GenreServiceImpl(GenreDao dao, ConsoleService consoleService) {

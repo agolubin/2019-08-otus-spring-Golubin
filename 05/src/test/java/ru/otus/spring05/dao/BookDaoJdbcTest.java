@@ -39,7 +39,7 @@ class BookDaoJdbcTest {
     void insert() throws BookExistException{
         Book book  = new Book(0L, new Author(DEFAULT_AUTHOR_ID, "", ""), new Genre(DEFAULT_GENRE_ID, ""), DEFAULT_BOOK_NAME);
         Book book2 = bookDaoJdbc.insert(book);
-        assertThat(bookDaoJdbc.getBookByID(NEW_BOOK_ID)).isEqualTo(BOOK_COUNT_NEW_BOOK);
+        assertThat(bookDaoJdbc.countByID(NEW_BOOK_ID)).isEqualTo(BOOK_COUNT_NEW_BOOK);
 
         Book book3 = bookDaoJdbc.getBookByID(book2.getBookID());
         Author author = book3.getAuthor();

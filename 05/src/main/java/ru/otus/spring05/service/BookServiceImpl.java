@@ -17,9 +17,9 @@ import java.util.List;
 @Service
 public class BookServiceImpl implements BookService {
 
-    private BookDao dao;
-    private AuthorDao authorDao;
-    private GenreDao genreDao;
+    private final BookDao dao;
+    private final AuthorDao authorDao;
+    private final GenreDao genreDao;
     private final ConsoleService consoleService;
 
     @Autowired
