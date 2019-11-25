@@ -16,6 +16,6 @@ import java.util.Locale;
 @Component
 public class ApplicationSettings {
 
-    public Locale locale;
+    private final Locale locale;
 
 }

@@ -78,7 +78,7 @@ public class BookDaoJdbc implements BookDao {
             return namedParameterJdbcOperations
                     .getJdbcOperations()
                     .query("select book.BookID, book.Name, " +
-                            "author.Name, author.SurName, genre.Name\n" +
+                            "author.Name, author.SurName, author.AuthorID, genre.Name, genre.GenreID\n" +
                             "from book \n" +
                             "inner join author\n" +
                             "on author.AuthorID = book.AuthorID\n" +
@@ -93,12 +93,13 @@ public class BookDaoJdbc implements BookDao {
 
         return namedParameterJdbcOperations.queryForObject(
                 "select book.BookID, book.Name, " +
-                        "author.Name, author.SurName, genre.Name\n" +
+                        "author.Name, author.SurName, author.AuthorID, genre.Name, genre.GenreID\n" +
                         "from book \n" +
                         "inner join author\n" +
                         "on author.AuthorID = book.AuthorID\n" +
                         "inner join genre\n" +
-                        "on genre.genreID = book.genreID", params, new BookWholeMapper()
+                        "on genre.genreID = book.genreID\n"+
+                         "where bookID = :bookID", params, new BookWholeMapper()
         );
     }
     public int countByID(Long bookID) {
@@ -118,7 +119,14 @@ public class BookDaoJdbc implements BookDao {
         params.addValue("authorID", authorID);
 
         return namedParameterJdbcOperations.queryForObject(
-                "select * from book where name = :name and genreID = :genreID and authorID = :authorID", params, new BookMapper()
+                "select book.BookID, book.Name, " +
+                        "author.Name, author.SurName, author.AuthorID, genre.Name, genre.GenreID\n" +
+                        "from book \n" +
+                        "inner join author\n" +
+                        "on author.AuthorID = book.AuthorID\n" +
+                        "inner join genre\n" +
+                        "on genre.genreID = book.genreID\n"+
+                        "where book.name = :name and book.genreID = :genreID and book.authorID = :authorID", params, new BookWholeMapper()
         );
     }
 
@@ -153,10 +161,12 @@ public class BookDaoJdbc implements BookDao {
         public Book mapRow(ResultSet resultSet, int i) throws SQLException {
             Long bookID      = resultSet.getLong("book.bookID");
             String name      = resultSet.getString("book.name");
+            Long genreID = resultSet.getLong("genre.GenreID");
             String genreName = resultSet.getString("genre.Name");
+            Long authorID = resultSet.getLong("author.AuthorID");
             String authorName = resultSet.getString("author.Name");
             String authorSurName = resultSet.getString("author.SurName");
-            return new Book(bookID, new Author(0L, authorName, authorSurName), new Genre(0L, genreName), name );
+            return new Book(bookID, new Author(authorID, authorName, authorSurName), new Genre(genreID, genreName), name );
         }
     }
 

@@ -27,24 +27,25 @@ class BookDaoJdbcTest {
     private static final int BOOK_COUNT_NEW_BOOK = 1;
     private static final int BOOK_COUNT_BY_ID = 1;
     private static final Long DEFAULT_BOOK_ID = 1L;
-    private static final Long DEFAULT_GENRE_ID = 2L;
-    private static final Long DEFAULT_AUTHOR_ID = 2L;
+    private static final Long DEFAULT_GENRE_ID = 1L;
+    private static final Long DEFAULT_AUTHOR_ID = 1L;
     private static final int BOOK_COUNT_DELETE_BOOK = 0;
     private static final String DEFAULT_BOOK_NAME = "Война и мир";
+    private static final String NEW_BOOK_NAME = "Анна Каренина";
 
     @Autowired
     private BookDaoJdbc bookDaoJdbc;
     @Test
     @DisplayName("должен корректно добавлять в базу книгу")
     void insert() throws BookExistException{
-        Book book  = new Book(0L, new Author(DEFAULT_AUTHOR_ID, "", ""), new Genre(DEFAULT_GENRE_ID, ""), DEFAULT_BOOK_NAME);
+        Book book  = new Book(0L, new Author(DEFAULT_AUTHOR_ID, "", ""), new Genre(DEFAULT_GENRE_ID, ""), NEW_BOOK_NAME);
         Book book2 = bookDaoJdbc.insert(book);
         assertThat(bookDaoJdbc.countByID(NEW_BOOK_ID)).isEqualTo(BOOK_COUNT_NEW_BOOK);
 
         Book book3 = bookDaoJdbc.getBookByID(book2.getBookID());
         Author author = book3.getAuthor();
         Genre genre   = book3.getGenre();
-        assertThat(book3).hasFieldOrPropertyWithValue("bookID", DEFAULT_BOOK_ID);
+        assertThat(book3).hasFieldOrPropertyWithValue("bookID", NEW_BOOK_ID);
         assertThat(genre).hasFieldOrPropertyWithValue("genreID", DEFAULT_GENRE_ID);
         assertThat(author).hasFieldOrPropertyWithValue("authorID", DEFAULT_AUTHOR_ID);
 

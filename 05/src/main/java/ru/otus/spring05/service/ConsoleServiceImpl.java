@@ -33,7 +33,7 @@ public class ConsoleServiceImpl implements ConsoleService {
               messageSource.getMessage(
                       "author.name",
                       null,
-                      settings.locale
+                      settings.getLocale()
               ));
         String name = ioService.readString();
 
@@ -41,7 +41,7 @@ public class ConsoleServiceImpl implements ConsoleService {
               messageSource.getMessage(
                       "author.surname",
                       null,
-                      settings.locale
+                      settings.getLocale()
               ));
         String surName = ioService.readString();
 
@@ -54,7 +54,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "author.ID",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
         Long id = ioService.readLong();
         ioService.readString();
@@ -63,7 +63,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "author.name",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
         String name = ioService.readString();
 
@@ -71,7 +71,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "author.surname",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
         String surName = ioService.readString();
 
@@ -84,7 +84,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "author.ID",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
         Long id = ioService.readLong();
 
@@ -98,19 +98,19 @@ public class ConsoleServiceImpl implements ConsoleService {
                     messageSource.getMessage(
                             "author.ID2",
                             null,
-                            settings.locale
+                            settings.getLocale()
                     ) + String.valueOf(author.getAuthorID()));
             ioService.printOut(
                     messageSource.getMessage(
                             "author.name2",
                             null,
-                            settings.locale
+                            settings.getLocale()
                     ) + author.getName());
             ioService.printOut(
                     messageSource.getMessage(
                             "author.surname2",
                             null,
-                            settings.locale
+                            settings.getLocale()
                     ) + author.getSurName());
         }
     }
@@ -121,7 +121,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "author.errorInsert",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 )+ message);
     }
 
@@ -130,7 +130,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "author.errorUpdate",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
     }
 
@@ -139,7 +139,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "author.errorDelete",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
     }
 
@@ -149,7 +149,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "genre.name",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
         String name = ioService.readString();
 
@@ -162,7 +162,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "genre.ID",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
         Long id = ioService.readLong();
         ioService.readString();
@@ -171,7 +171,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "genre.name",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
         String name = ioService.readString();
 
@@ -184,7 +184,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "genre.ID",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
         Long id = ioService.readLong();
 
@@ -198,13 +198,13 @@ public class ConsoleServiceImpl implements ConsoleService {
                     messageSource.getMessage(
                             "genre.ID2",
                             null,
-                            settings.locale
+                            settings.getLocale()
                     ) + String.valueOf(genre.getGenreID()));
             ioService.printOut(
                     messageSource.getMessage(
                             "genre.name2",
                             null,
-                            settings.locale
+                            settings.getLocale()
                     ) + genre.getName());
         }
     }
@@ -215,7 +215,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "genre.errorInsert",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 )+ " " + message);
     }
 
@@ -224,7 +224,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "genre.errorUpdate",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
     }
 
@@ -233,7 +233,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "genre.errorDelete",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
     }
 
@@ -244,7 +244,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "book.name",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
         String name = ioService.readString();
 
@@ -252,7 +252,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "book.authorName",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
         String authorName = ioService.readString();
 
@@ -260,7 +260,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "book.authorSurName",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
         String authorSurName = ioService.readString();
 
@@ -268,7 +268,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "book.genreName",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
         String genreName = ioService.readString();
 
@@ -280,7 +280,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "book.authorName",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
 
         return ioService.readString();
@@ -291,7 +291,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "book.authorSurName",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
 
         return ioService.readString();
@@ -302,7 +302,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "book.genre",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
 
         return ioService.readString();
@@ -313,7 +313,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "book.name",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
 
         return ioService.readString();
@@ -324,7 +324,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         errorName,
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
     }
 
@@ -333,7 +333,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "book.authorName",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
 
         return ioService.readLong();
@@ -345,7 +345,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "book.ID",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
         Long id = ioService.readLong();
         ioService.readString();
@@ -354,7 +354,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "book.name",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
         String name = ioService.readString();
 
@@ -362,7 +362,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "book.authorName",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
         String authorName = ioService.readString();
 
@@ -370,7 +370,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "book.authorSurName",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
         String authorSurName = ioService.readString();
 
@@ -378,7 +378,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "book.genreName",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
         String genreName = ioService.readString();
 
@@ -391,7 +391,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "book.ID",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
         Long id = ioService.readLong();
 
@@ -405,25 +405,25 @@ public class ConsoleServiceImpl implements ConsoleService {
                     messageSource.getMessage(
                             "book.ID2",
                             null,
-                            settings.locale
+                            settings.getLocale()
                     ) + String.valueOf(book.getBookID()));
             ioService.printOut(
                     messageSource.getMessage(
                             "book.author2",
                             null,
-                            settings.locale
+                            settings.getLocale()
                     ) + book.getAuthor().getName() + " " + book.getAuthor().getSurName());
             ioService.printOut(
                     messageSource.getMessage(
                             "book.name2",
                             null,
-                            settings.locale
+                            settings.getLocale()
                     ) + book.getName());
             ioService.printOut(
                     messageSource.getMessage(
                             "book.genre2",
                             null,
-                            settings.locale
+                            settings.getLocale()
                     ) + book.getGenre().getName());
         }
     }
@@ -434,7 +434,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "book.errorInsert",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ) + " " + message);
     }
 
@@ -443,7 +443,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "book.errorUpdate",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
     }
 
@@ -452,7 +452,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 messageSource.getMessage(
                         "book.errorDelete",
                         null,
-                        settings.locale
+                        settings.getLocale()
                 ));
     }
 
