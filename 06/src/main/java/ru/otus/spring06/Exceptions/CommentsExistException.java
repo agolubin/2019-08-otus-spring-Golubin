@@ -1,4 +1,4 @@
-package ru.otus.spring06.Exceptions;
+package ru.otus.spring06.exceptions;
 
 public class CommentsExistException extends Exception {
 

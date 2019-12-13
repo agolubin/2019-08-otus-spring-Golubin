@@ -2,16 +2,16 @@ package ru.otus.spring06.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.otus.spring06.Exceptions.BookExistException;
-import ru.otus.spring06.Repository.AuthorRepository;
-import ru.otus.spring06.Repository.BookRepository;
-import ru.otus.spring06.Repository.GenreRepository;
+import ru.otus.spring06.exceptions.BookExistException;
+import ru.otus.spring06.repository.AuthorRepository;
+import ru.otus.spring06.repository.BookRepository;
+import ru.otus.spring06.repository.GenreRepository;
 import ru.otus.spring06.domain.Author;
 import ru.otus.spring06.domain.Book;
 import ru.otus.spring06.domain.Genre;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -61,9 +61,9 @@ public class BookServiceImpl implements BookService {
 
     public void update() {
         Long bookid = consoleService.bookBookID();
-        Book book = bookRepository.getByID(bookid);
+        Optional<Book> book2 = bookRepository.getByID(bookid);
 
-        if (book == null){
+        if (book2.isPresent()){
             consoleService.printError("book.errorBookExist");
             return;
         }
@@ -89,9 +89,7 @@ public class BookServiceImpl implements BookService {
 
         String bookName = consoleService.bookNameIn();
 
-        book.setAuthor(author);
-        book.setGenre(genre);
-        book.setName(bookName);
+        Book book = new Book(0L, author, genre, bookName);
         try {
             bookRepository.insert(book);
         } catch (BookExistException e) {

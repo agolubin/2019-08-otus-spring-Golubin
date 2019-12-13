@@ -2,12 +2,13 @@ package ru.otus.spring06.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.otus.spring06.Exceptions.AuthorExistException;
-import ru.otus.spring06.Repository.AuthorRepository;
+import ru.otus.spring06.exceptions.AuthorExistException;
+import ru.otus.spring06.repository.AuthorRepository;
 import ru.otus.spring06.domain.Author;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
@@ -22,10 +23,10 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     public void insert() {
-        Author author = consoleService.authorInsert();
-        if (author != null){
+        Optional<Author> author =  consoleService.authorInsert();
+        if (author.isPresent()){
             try {
-                authorRepository.insert(author);
+                authorRepository.insert(author.get());
             } catch (AuthorExistException e) {
                 consoleService.authorErrorInsert(e.getMessage());
             }
@@ -36,10 +37,10 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     public void update() {
-        Author author = consoleService.authorUpdate();
-        if (author != null){
+        Optional<Author> author = consoleService.authorUpdate();
+        if (author.isPresent()){
             try {
-                authorRepository.update(author);
+                authorRepository.update(author.get());
             }
             catch (Exception e){
                 consoleService.authorErrorUpdate();
@@ -50,11 +51,11 @@ public class AuthorServiceImpl implements AuthorService {
         }
     }
     public void delete() {
-        Author author = authorRepository.getByID(consoleService.authorDelete());
+        Optional<Author> author = authorRepository.getByID(consoleService.authorDelete());
 
-        if (author.getID() > 0){
+        if (author.get().getID() > 0){
             try {
-                authorRepository.delete(author);
+                authorRepository.delete(author.get());
             }
             catch (Exception e){
                 consoleService.authorErrorDelete();

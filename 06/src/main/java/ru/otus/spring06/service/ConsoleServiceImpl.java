@@ -2,6 +2,7 @@ package ru.otus.spring06.service;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class ConsoleServiceImpl implements ConsoleService {
         this.messageSource = messageSource;
     }
 
-    public Author authorInsert() {
+    public Optional<Author> authorInsert() {
         ioService.printOut(
               messageSource.getMessage(
                       "author.name",
@@ -46,10 +47,10 @@ public class ConsoleServiceImpl implements ConsoleService {
               ));
         String surName = ioService.readString();
 
-        return new Author(0L, name, surName);
+        return Optional.of( new Author(0L, name, surName));
     }
 
-    public Author authorUpdate() {
+    public Optional<Author> authorUpdate() {
 
         ioService.printOut(
                 messageSource.getMessage(
@@ -76,7 +77,7 @@ public class ConsoleServiceImpl implements ConsoleService {
                 ));
         String surName = ioService.readString();
 
-        return new Author(id, name, surName);
+        return Optional.of( new Author(id, name, surName));
     }
 
     public Long  authorDelete() {
@@ -88,7 +89,6 @@ public class ConsoleServiceImpl implements ConsoleService {
                         settings.locale
                 ));
         return ioService.readLong();
-        //return new Author(id, "", "");
     }
 
     public void authorFindAll(List<Author> list){
@@ -144,7 +144,7 @@ public class ConsoleServiceImpl implements ConsoleService {
     }
 
 
-    public Genre genreInsert() {
+    public Optional<Genre> genreInsert() {
         ioService.printOut(
                 messageSource.getMessage(
                         "genre.name",
@@ -153,10 +153,10 @@ public class ConsoleServiceImpl implements ConsoleService {
                 ));
         String name = ioService.readString();
 
-        return new Genre(0L, name);
+        return Optional.of( new Genre(0L, name));
     }
 
-    public Genre genreUpdate() {
+    public Optional<Genre> genreUpdate() {
 
         ioService.printOut(
                 messageSource.getMessage(
@@ -175,7 +175,8 @@ public class ConsoleServiceImpl implements ConsoleService {
                 ));
         String name = ioService.readString();
 
-        return new Genre(id, name);
+        return Optional.of( new Genre(id, name));
+
     }
 
     public Long genreDelete() {

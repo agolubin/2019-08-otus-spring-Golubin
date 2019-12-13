@@ -2,13 +2,14 @@ package ru.otus.spring06.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.otus.spring06.Exceptions.CommentsExistException;
-import ru.otus.spring06.Repository.BookRepository;
-import ru.otus.spring06.Repository.CommentsRepository;
+import ru.otus.spring06.exceptions.CommentsExistException;
+import ru.otus.spring06.repository.BookRepository;
+import ru.otus.spring06.repository.CommentsRepository;
 import ru.otus.spring06.domain.Book;
 import ru.otus.spring06.domain.Comments;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CommentsServiceImpl implements CommentsService {
@@ -26,16 +27,16 @@ public class CommentsServiceImpl implements CommentsService {
 
     public void insert() {
         Long bookid = consoleService.bookBookID();
-        Book book   = bookRepository.getByID(bookid);
+        Optional<Book> book   = bookRepository.getByID(bookid);
 
-        if (book == null){
+        if (book.isPresent()){
             consoleService.printError("book.errorBookExist");
             return;
         }
 
         String textComment    = consoleService.commentsText();
 
-        Comments comments = new Comments(0L, book, textComment);
+        Comments comments = new Comments(0L, book.get(), textComment);
         try {
             commentsRepository.insert(comments);
         } catch (CommentsExistException e) {
@@ -45,24 +46,24 @@ public class CommentsServiceImpl implements CommentsService {
 
     public void update() {
         Long commentsID = consoleService.commentsCommentsID();
-        Comments comments = commentsRepository.getByID(commentsID);
+        Optional<Comments> comments2 = commentsRepository.getByID(commentsID);
 
-        if (comments == null){
+        if (comments2.isPresent()){
             consoleService.printError("comments.errorCommentsExist");
             return;
         }
 
         Long bookid = consoleService.bookBookID();
-        Book book = bookRepository.getByID(bookid);
+        Optional<Book> book = bookRepository.getByID(bookid);
 
-        if (book == null){
+        if (!book.isPresent()){
             consoleService.printError("book.errorBookExist");
             return;
         }
 
         String textComment    = consoleService.commentsText();
 
-        comments.setTextComment(textComment);
+        Comments comments = new Comments(0L, book.get(), textComment);
 
         try {
             commentsRepository.update(comments);
@@ -75,11 +76,11 @@ public class CommentsServiceImpl implements CommentsService {
 
     public void delete() {
         Long commentsID = consoleService.commentsCommentsID();
-        Comments comments = commentsRepository.getByID(commentsID);
+        Optional<Comments> comments = commentsRepository.getByID(commentsID);
 
-        if (comments.getID() > 0){
+        if (comments.get().getID() > 0){
             try {
-                commentsRepository.delete(comments);
+                commentsRepository.delete(comments.get());
             }
             catch (Exception e){
                 consoleService.printError("comments.errorDelete");

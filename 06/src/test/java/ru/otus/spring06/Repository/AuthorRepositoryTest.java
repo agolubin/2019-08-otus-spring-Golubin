@@ -1,21 +1,18 @@
-package ru.otus.spring06.Repository;
+package ru.otus.spring06.repository;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import ru.otus.spring06.Exceptions.AuthorExistException;
-import ru.otus.spring06.Repository.AuthorRepository;
-import ru.otus.spring06.Repository.AuthorRepositoryJpa;
+import ru.otus.spring06.exceptions.AuthorExistException;
 import ru.otus.spring06.domain.Author;
 
 import ru.otus.spring06.spring06Application;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -52,11 +49,11 @@ class AuthorRepositoryTest {
         Author author  = new Author(0L,  NEW_AUTHOR_NAME, NEW_AUTHOR_SURNAME);
         authorRepository.insert(author);
 
-        Author authordb  = authorRepository.getByID(NEW_AUTHOR_ID);
+        Optional<Author> authordb  = authorRepository.getByID(NEW_AUTHOR_ID);
 
-        assertThat(authordb).hasFieldOrPropertyWithValue("ID", NEW_AUTHOR_ID);
-        assertThat(authordb).hasFieldOrPropertyWithValue("name", NEW_AUTHOR_NAME);
-        assertThat(authordb).hasFieldOrPropertyWithValue("surName", NEW_AUTHOR_SURNAME);
+        assertThat(authordb.get()).hasFieldOrPropertyWithValue("ID", NEW_AUTHOR_ID);
+        assertThat(authordb.get()).hasFieldOrPropertyWithValue("name", NEW_AUTHOR_NAME);
+        assertThat(authordb.get()).hasFieldOrPropertyWithValue("surName", NEW_AUTHOR_SURNAME);
 
     }
 
@@ -65,17 +62,17 @@ class AuthorRepositoryTest {
     void deleteByID() throws AuthorExistException{
         Author author  = new Author(DEFAULT_AUTHOR_ID,  DEFAULT_AUTHOR_NAME, DEFAULT_AUTHOR_SURNAME);
         authorRepository.delete(author);
-        Author authorDB  = authorRepository.getByID(DEFAULT_AUTHOR_ID);
-        assertThat(authorDB).isNull();
+        Optional<Author> authorDB  = authorRepository.getByID(DEFAULT_AUTHOR_ID);
+        assertThat(authorDB.get()).isNull();
     }
 
     @Test
     @DisplayName("должен корректно искать автора в базе по ID")
     void getAuthorByID() {
         Author author  = new Author(DEFAULT_AUTHOR_ID,  DEFAULT_AUTHOR_NAME, DEFAULT_AUTHOR_SURNAME);
-        Author authordb = authorRepository.getByID(DEFAULT_AUTHOR_ID);
-        assertThat(authordb).hasFieldOrPropertyWithValue("ID", DEFAULT_AUTHOR_ID);
-        assertThat(authordb).hasFieldOrPropertyWithValue("name", DEFAULT_AUTHOR_NAME);
-        assertThat(authordb).hasFieldOrPropertyWithValue("surName", DEFAULT_AUTHOR_SURNAME);
+        Optional<Author> authordb = authorRepository.getByID(DEFAULT_AUTHOR_ID);
+        assertThat(authordb.get()).hasFieldOrPropertyWithValue("ID", DEFAULT_AUTHOR_ID);
+        assertThat(authordb.get()).hasFieldOrPropertyWithValue("name", DEFAULT_AUTHOR_NAME);
+        assertThat(authordb.get()).hasFieldOrPropertyWithValue("surName", DEFAULT_AUTHOR_SURNAME);
     }
 }

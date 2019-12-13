@@ -2,12 +2,13 @@ package ru.otus.spring06.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.otus.spring06.Exceptions.GenreExistException;
-import ru.otus.spring06.Repository.GenreRepository;
+import ru.otus.spring06.exceptions.GenreExistException;
+import ru.otus.spring06.repository.GenreRepository;
 import ru.otus.spring06.domain.Genre;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GenreServiceImpl implements GenreService {
@@ -22,10 +23,10 @@ public class GenreServiceImpl implements GenreService {
     }
 
     public void insert() {
-        Genre genre = consoleService.genreInsert();
-        if (genre != null){
+        Optional<Genre> genre = consoleService.genreInsert();
+        if (genre.isPresent()){
             try {
-                genreRepository.insert(genre);
+                genreRepository.insert(genre.get());
             } catch (GenreExistException e) {
                 consoleService.genreErrorInsert(e.getMessage());
             }
@@ -36,10 +37,10 @@ public class GenreServiceImpl implements GenreService {
     }
 
     public void update() {
-        Genre genre = consoleService.genreUpdate();
-        if (genre != null){
+        Optional<Genre> genre = consoleService.genreUpdate();
+        if (genre.isPresent()){
             try {
-                genreRepository.update(genre);
+                genreRepository.update(genre.get());
             }
             catch (Exception e){
                 consoleService.genreErrorUpdate();
@@ -50,10 +51,10 @@ public class GenreServiceImpl implements GenreService {
         }
     }
     public void delete() {
-        Genre genre = genreRepository.getByID(consoleService.genreDelete());
-        if (genre.getID() > 0){
+        Optional<Genre> genre = genreRepository.getByID(consoleService.genreDelete());
+        if (genre.get().getID() > 0){
             try {
-                genreRepository.delete(genre);
+                genreRepository.delete(genre.get());
             }
             catch (Exception e){
                 consoleService.genreErrorDelete();

@@ -6,6 +6,7 @@ import ru.otus.spring06.domain.Genre;
 import ru.otus.spring06.domain.Book;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ConsoleService {
 
@@ -13,16 +14,16 @@ public interface ConsoleService {
     void authorErrorUpdate();
     void authorErrorDelete();
     void authorFindAll(List<Author> list);
-    Author authorInsert();
-    Author authorUpdate();
+    Optional<Author> authorInsert();
+    Optional<Author> authorUpdate();
     Long authorDelete();
 
     void genreErrorInsert(String message);
     void genreErrorUpdate();
     void genreErrorDelete();
     void genreFindAll(List<Genre> list);
-    Genre genreInsert();
-    Genre genreUpdate();
+    Optional<Genre> genreInsert();
+    Optional<Genre> genreUpdate();
     Long genreDelete();
 
     void bookErrorInsert(String message);

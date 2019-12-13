@@ -1,14 +1,16 @@
-package ru.otus.spring06.Repository;
+package ru.otus.spring06.repository;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring06.domain.Comments;
+import ru.otus.spring06.domain.Genre;
 
 import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Optional;
 
 @SuppressWarnings("JpaQlInspection")
 @Repository
@@ -30,12 +32,17 @@ public class CommentsRepositoryJpa implements CommentsRepository {
 
     @Override
     public void delete(Comments p) {
-        em.remove(em.contains(p) ? p : em.merge(p));
+        TypedQuery<Comments> query = em.createQuery(
+                "select a from Comments a where a.iD = :id",
+                Comments.class);
+        query.setParameter("id", p.getID());
+        Comments commentsdb =  query.getSingleResult();
+        em.remove(commentsdb);
     }
 
     @Override
-    public Comments getByID(Long commentsID) {
-        return em.find(Comments.class, commentsID);
+    public Optional<Comments> getByID(Long commentsID) {
+        return Optional.of(em.find(Comments.class, commentsID));
     }
 
 

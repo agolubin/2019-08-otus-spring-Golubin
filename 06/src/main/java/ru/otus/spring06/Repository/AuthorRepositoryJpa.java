@@ -1,4 +1,4 @@
-package ru.otus.spring06.Repository;
+package ru.otus.spring06.repository;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Optional;
 
 @SuppressWarnings("JpaQlInspection")
 @Repository
@@ -29,12 +30,18 @@ public class AuthorRepositoryJpa implements AuthorRepository {
 
     @Override
     public void delete(Author p) {
-        em.remove(em.contains(p) ? p : em.merge(p));
+        TypedQuery<Author> query = em.createQuery(
+                "select a from Author a where a.iD = :id",
+                Author.class);
+        query.setParameter("id", p.getID());
+        Author authordb =  query.getSingleResult();
+
+        em.remove(authordb);
     }
 
     @Override
-    public Author getByID(Long authorID) {
-        return em.find(Author.class, authorID);
+    public Optional<Author> getByID(Long authorID) {
+        return Optional.of(em.find(Author.class, authorID));
     }
 
     @Override

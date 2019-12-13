@@ -1,13 +1,15 @@
-package ru.otus.spring06.Repository;
+package ru.otus.spring06.repository;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ru.otus.spring06.domain.Author;
 import ru.otus.spring06.domain.Genre;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Optional;
 
 @SuppressWarnings("JpaQlInspection")
 @Repository
@@ -23,8 +25,8 @@ public class GenreRepositoryJpa implements GenreRepository {
     }
 
     @Override
-    public Genre getByID(Long GenreID) {
-        return em.find(Genre.class, GenreID);
+    public Optional<Genre> getByID(Long GenreID) {
+        return Optional.of(em.find(Genre.class, GenreID));
     }
 
     @Override
@@ -34,7 +36,12 @@ public class GenreRepositoryJpa implements GenreRepository {
 
     @Override
     public void delete(Genre p) {
-        em.remove(em.contains(p) ? p : em.merge(p));
+        TypedQuery<Genre> query = em.createQuery(
+                "select a from Genre a where a.iD = :id",
+                Genre.class);
+        query.setParameter("id", p.getID());
+        Genre genredb =  query.getSingleResult();
+        em.remove(genredb);
     }
 
     @Override
