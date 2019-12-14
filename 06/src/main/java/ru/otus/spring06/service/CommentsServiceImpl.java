@@ -29,7 +29,7 @@ public class CommentsServiceImpl implements CommentsService {
         Long bookid = consoleService.bookBookID();
         Optional<Book> book   = bookRepository.getByID(bookid);
 
-        if (book.isPresent()){
+        if (!book.isPresent()){
             consoleService.printError("book.errorBookExist");
             return;
         }
@@ -48,7 +48,7 @@ public class CommentsServiceImpl implements CommentsService {
         Long commentsID = consoleService.commentsCommentsID();
         Optional<Comments> comments2 = commentsRepository.getByID(commentsID);
 
-        if (comments2.isPresent()){
+        if (!comments2.isPresent()){
             consoleService.printError("comments.errorCommentsExist");
             return;
         }

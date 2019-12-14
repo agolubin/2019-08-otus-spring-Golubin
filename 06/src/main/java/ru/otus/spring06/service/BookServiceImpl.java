@@ -63,7 +63,7 @@ public class BookServiceImpl implements BookService {
         Long bookid = consoleService.bookBookID();
         Optional<Book> book2 = bookRepository.getByID(bookid);
 
-        if (book2.isPresent()){
+        if (!book2.isPresent()){
             consoleService.printError("book.errorBookExist");
             return;
         }

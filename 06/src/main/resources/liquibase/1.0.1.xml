@@ -20,7 +20,7 @@
                         <column name="ID" type="Long" autoIncrement="${autoIncrement}" defaultValueSequenceNext="Author_AuthorID_seq">
                                 <constraints primaryKey="true" nullable="false" />
                         </column>
-                        <column name="SURNAME" type="VARCHAR(255)">
+                        <column name="SUR_NAME" type="VARCHAR(255)">
                                 <constraints nullable="false" />
                         </column>
                         <column name="NAME" type="VARCHAR(255)">
@@ -106,7 +106,7 @@
                         <column name="Book_ID" type="Long">
                                 <constraints nullable="false" />
                         </column>
-                        <column name="TextComment" type="VARCHAR(255)">
+                        <column name="Text_Comment" type="VARCHAR(255)">
                                 <constraints nullable="false" />
                         </column>
 
