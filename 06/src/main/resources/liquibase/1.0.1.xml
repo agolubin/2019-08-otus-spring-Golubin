@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+        
+    <property name="autoIncrement" value="false" dbms="postgresql,mssql,oracle"/>
+    <property name="autoIncrement" value="true" dbms="h2"/>
+
+        <changeSet id="1.0.1.01" author="agolubin" context="update" runInTransaction="false">
+                <preConditions onFail="MARK_RAN">
+                        <not>
+                                <tableExists tableName="Author"/>
+                        </not>
+                </preConditions>
+
+                <createSequence sequenceName="Author_AuthorID_seq" incrementBy="1" startValue="1"/>
+
+                <createTable tableName="Author">
+                        <column name="ID" type="Long" autoIncrement="${autoIncrement}" defaultValueSequenceNext="Author_AuthorID_seq">
+                                <constraints primaryKey="true" nullable="false" />
+                        </column>
+                        <column name="SUR_NAME" type="VARCHAR(255)">
+                                <constraints nullable="false" />
+                        </column>
+                        <column name="NAME" type="VARCHAR(255)">
+                                <constraints nullable="false" />
+                        </column>
+                </createTable>
+
+                <createIndex tableName="Author" indexName="XPKAuthor" unique="true">
+                        <column name="ID"/>
+                </createIndex>
+
+                <comment>Creation of table Author</comment>
+        </changeSet>
+        <changeSet id="1.0.1.02" author="agolubin" context="update" runInTransaction="false">
+                <preConditions onFail="MARK_RAN">
+                        <not>
+                                <tableExists tableName="Genre"/>
+                        </not>
+                </preConditions>
+
+                <createSequence sequenceName="Genre_GenreID_seq" incrementBy="1" startValue="1"/>
+
+                <createTable tableName="Genre">
+                        <column name="ID" type="Long" autoIncrement="${autoIncrement}" defaultValueSequenceNext="Genre_GenreID_seq">
+                                <constraints primaryKey="true" nullable="false" />
+                        </column>
+                        <column name="NAME" type="VARCHAR(255)">
+                                <constraints nullable="false" />
+                        </column>
+
+                </createTable>
+
+                <createIndex tableName="Genre" indexName="XPKGenre" unique="true">
+                        <column name="ID"/>
+                </createIndex>
+                <comment>Creation of table Genre</comment>
+        </changeSet>
+        <changeSet id="1.0.1.03" author="agolubin" context="update" runInTransaction="false">
+                <preConditions onFail="MARK_RAN">
+                        <not>
+                                <tableExists tableName="Book"/>
+                        </not>
+                </preConditions>
+                
+                <createSequence sequenceName="Book_Bookid_seq" incrementBy="1" startValue="1"/>
+
+                <createTable tableName="Book">
+                        <column name="ID" type="LONG" autoIncrement="${autoIncrement}" defaultValueSequenceNext="Book_BookID_seq">
+                                <constraints primaryKey="true" nullable="false" />
+                        </column>
+                        <column name="Author_ID" type="Long">
+                                <constraints nullable="false" />
+                        </column>
+                        <column name="Genre_ID" type="Long">
+                                <constraints nullable="false" />
+                        </column>
+                        <column name="Name" type="VARCHAR(255)">
+                                <constraints nullable="false" />
+                        </column>
+
+                </createTable>
+                
+                <createIndex tableName="Book" indexName="XPKBook" unique="true">
+                        <column name="ID"/>
+                </createIndex>
+                
+                <comment>Creation of table Book</comment>
+        </changeSet>
+
+        <changeSet id="1.0.1.04" author="agolubin" context="update" runInTransaction="false">
+                <preConditions onFail="MARK_RAN">
+                        <not>
+                                <tableExists tableName="Comments"/>
+                        </not>
+                </preConditions>
+                
+                <createSequence sequenceName="Comments_Commentsid_seq" incrementBy="1" startValue="1"/>
+
+                <createTable tableName="Comments">
+                        <column name="ID" type="LONG" autoIncrement="${autoIncrement}" defaultValueSequenceNext="Comments_CommentsID_seq">
+                                <constraints primaryKey="true" nullable="false" />
+                        </column>
+                        <column name="Book_ID" type="Long">
+                                <constraints nullable="false" />
+                        </column>
+                        <column name="Text_Comment" type="VARCHAR(255)">
+                                <constraints nullable="false" />
+                        </column>
+
+                </createTable>
+                
+                <createIndex tableName="Comments" indexName="XPKComments" unique="true">
+                        <column name="ID"/>
+                </createIndex>
+                
+                <comment>Creation of table Comments</comment>
+        </changeSet>
+
+</databaseChangeLog>
