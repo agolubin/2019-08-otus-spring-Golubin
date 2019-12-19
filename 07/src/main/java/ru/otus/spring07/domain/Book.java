@@ -15,11 +15,11 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long  iD;
 
-    @ManyToOne(targetEntity = Author.class, fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @ManyToOne(targetEntity = Author.class, fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "Author_ID")
     private Author author;
 
-    @ManyToOne(targetEntity = Genre.class, fetch = FetchType.EAGER, cascade = CascadeType.MERGE )
+    @ManyToOne(targetEntity = Genre.class, fetch = FetchType.LAZY, cascade = CascadeType.MERGE )
     @JoinColumn(name = "Genre_ID")
     private Genre genre;
 

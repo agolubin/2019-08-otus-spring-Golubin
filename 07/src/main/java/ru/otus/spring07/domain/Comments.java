@@ -6,8 +6,6 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "Comments")
-@NamedEntityGraph(name = "CommetsWithBook",
-        attributeNodes = {@NamedAttributeNode(value = "book")})
 public class Comments {
 
     @Id

@@ -33,25 +33,25 @@ public class BookServiceImpl implements BookService {
         String authorName    = consoleService.bookAuthorNameIn();
         String authorSurName = consoleService.bookAuthorSurNameIn();
 
-        Author author = authorRepository.findAuthorByNameAndSurName(authorName, authorSurName);
+        Optional<Author> author = authorRepository.findAuthorByNameAndSurName(authorName, authorSurName);
 
-        if (author == null){
+        if (!author.isPresent()){
             consoleService.printError("book.errorAuthorExist");
             return;
         }
 
         String genreName    = consoleService.bookGenreIn();
 
-        Genre genre = genreRepository.findGenreByName(genreName);
+        Optional<Genre>  genre = genreRepository.findGenreByName(genreName);
 
-        if (genre == null){
+        if (!genre.isPresent()){
             consoleService.printError("book.errorGenreExist");
             return;
         }
 
         String bookName = consoleService.bookNameIn();
 
-        Book book = new Book(0L, author, genre, bookName);
+        Book book = new Book(0L, author.get(), genre.get(), bookName);
             bookRepository.save(book);
     }
 
@@ -67,25 +67,25 @@ public class BookServiceImpl implements BookService {
         String authorName    = consoleService.bookAuthorNameIn();
         String authorSurName = consoleService.bookAuthorSurNameIn();
 
-        Author author = authorRepository.findAuthorByNameAndSurName(authorName, authorSurName);
+        Optional<Author> author = authorRepository.findAuthorByNameAndSurName(authorName, authorSurName);
 
-        if (author == null){
+        if (!author.isPresent()){
             consoleService.printError("book.errorAuthorExist");
             return;
         }
 
         String genreName    = consoleService.bookGenreIn();
 
-        Genre genre = genreRepository.findGenreByName(genreName);
+        Optional<Genre>  genre = genreRepository.findGenreByName(genreName);
 
-        if (genre == null){
+        if (!genre.isPresent()){
             consoleService.printError("book.errorGenreExist");
             return;
         }
 
         String bookName = consoleService.bookNameIn();
 
-        Book book = new Book(0L, author, genre, bookName);
+        Book book = new Book(0L, author.get(), genre.get(), bookName);
         bookRepository.save(book);
     }
 

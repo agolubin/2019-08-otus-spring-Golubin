@@ -9,9 +9,5 @@ import java.util.Optional;
 
 public interface AuthorRepository extends JpaRepository<Author, Long> {
 
-    Author save(Author author);
-    void delete(Author author);
-    Optional<Author> findById(Long authorID);
-    List<Author> findAll();
-    Author findAuthorByNameAndSurName(String name, String surName);
+    Optional<Author> findAuthorByNameAndSurName(String name, String surName);
 }

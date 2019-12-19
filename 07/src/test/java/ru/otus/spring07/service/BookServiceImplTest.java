@@ -6,6 +6,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -21,9 +23,12 @@ import ru.otus.spring07.domain.Book;
 import ru.otus.spring07.domain.Genre;
 import ru.otus.spring07.Spring07Application;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Сервис для работы с книгами ")
+@SpringBootTest
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes=Spring07Application.class)
 class BookServiceImplTest {
@@ -59,14 +64,14 @@ class BookServiceImplTest {
         Mockito.when(console.bookAuthorNameIn()).thenReturn(DEFAULT_AUTHOR_NAME);
 
         Mockito.when(console.bookAuthorSurNameIn()).thenReturn(DEFAULT_AUTHOR_SURNAME);
-        Author author = new Author(DEFAULT_AUTHOR_ID, DEFAULT_AUTHOR_NAME, DEFAULT_AUTHOR_SURNAME);
+        Optional<Author> author = Optional.of(new Author(DEFAULT_AUTHOR_ID, DEFAULT_AUTHOR_NAME, DEFAULT_AUTHOR_SURNAME));
         Mockito.when(authorRepository.findAuthorByNameAndSurName(anyString(), anyString())).thenReturn(author);
-        Genre genre = new Genre(DEFAULT_GENRE_ID, DEFAULT_GENRE_NAME);
+        Optional<Genre> genre = Optional.of(new Genre(DEFAULT_GENRE_ID, DEFAULT_GENRE_NAME));
         Mockito.when(genreRepository.findGenreByName(any())).thenReturn(genre);
 
         Mockito.when(console.bookNameIn()).thenReturn(DEAULT_BOOK_NAME);
 
-        Book book = new Book(DEFAULT_BOOK_ID, author, genre, DEAULT_BOOK_NAME);
+        Book book = new Book(DEFAULT_BOOK_ID, author.get(), genre.get(), DEAULT_BOOK_NAME);
 
         bookService.insert();
 

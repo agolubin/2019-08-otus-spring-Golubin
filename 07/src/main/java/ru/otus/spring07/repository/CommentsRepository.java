@@ -10,8 +10,4 @@ import java.util.Optional;
 
 public interface CommentsRepository extends JpaRepository<Comments, Long> {
 
-    Comments save(Comments comments);
-    void delete(Comments comments);
-    Optional<Comments> findById(Long commentsID);
-    List<Comments> findAll();
 }

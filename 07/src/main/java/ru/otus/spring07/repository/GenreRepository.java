@@ -10,9 +10,5 @@ import java.util.Optional;
 
 public interface GenreRepository extends JpaRepository<Genre, Long> {
 
-    Genre save(Genre genre);
-    void delete(Genre genre);
-    Optional<Genre> findById(Long genreID);
-    List<Genre> findAll();
-    Genre findGenreByName(String name);
+    Optional<Genre> findGenreByName(String name);
 }
