@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8"/>
+	<title>List of all books</title>
+	<style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .books, .books td {
+            border: 1px solid lightgray;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+	<div class="container my-2">
+		<div class="book">
+			<div class="book-body">
+				<div th:switch="${books}" class="container my-5">
+					<p class="my-5">
+						<a href="/Add_Book" class="btn btn-primary"><i
+							class="fas fa-user-plus ml-2"> Добавить книгу</i></a>
+					</p>
+					<div class="col-md-10">
+						<h2 th:case="null">Книги отсутствуют!!</h2>
+						<div th:case="*">
+							<table class="table table-striped table-responsive-md">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Автор</th>
+										<th>Жанр</th>
+										<th>Название</th>
+										<th>Edit</th>
+										<th>Delete</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="book : ${books}">
+										<td th:text="${book.iD}">10000</td>
+										<td th:text="${book.genre.name}">Повесть</td>
+										<td th:text="${book.author.name} + ' ' + ${book.author.surName}">Некрасов</td>
+										<td th:text="${book.name}">Кому на Руси жить хорошо</td>
+										<td>
+											<a href="#" th:text="${book.iD}" th:href="@{/books/update/{id}(id=${book.iD})}">Редактировать</a>
+										</td>
+										<td>
+											<a href="#" th:text="${book.iD}" th:href="@{/books/delete/{id}(id=${book.iD})}">Удалить</a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
