@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8"/>
+	<title>List of all books</title>
+	<style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .books, .books td {
+            border: 1px solid lightgray;
+            padding: 5px;
+        }
+    </style>
+	<script src="webjars/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<h1>Книги:</h1>
+
+<table class="books">
+	<thead>
+	<tr>
+		<th>ID</th>
+		<th>Автор</th>
+		<th>Жанр</th>
+		<th>Название</th>
+		<th>Изменить</th>
+		<th>Удалить</th>
+	</tr>
+	</thead>
+	<tbody>
+	</tbody>
+</table>
+<div class="btn-group">
+	<td><button type="button" class="btn btn-secondary" onclick="newBook()">Добавить</button></td>
+</div>
+<script src="/request.js"></script>
+<div class="content"></div>
+</body>
+</html>
