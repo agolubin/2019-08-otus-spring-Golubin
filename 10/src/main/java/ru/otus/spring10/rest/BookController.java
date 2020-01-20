@@ -26,36 +26,32 @@ public class BookController {
         this.genreService = genreService;
     }
 
-    @GetMapping("/Add_Book")
-    public String showAddForm(Book book) {
-        return "add_book";
-    }
 
-    @GetMapping("/api/books")
-    public List<Book> listPage() {
+    @GetMapping("/books")
+    public List<Book> findAll() {
         List<Book> listBook = bookService.findAll();
         return listBook;
     }
 
-    @PostMapping("/books/add")
+    @PostMapping("/books")
     public Book addBook(@RequestBody Book book) {
         return bookService.insert(book.getAuthor().getName(), book.getAuthor().getSurName(), book.getGenre().getName(), book.getName());
     }
 
-    @GetMapping("/books/update/{id}")
-    public Book editPage(@PathVariable Long id) {
+    @GetMapping("/books/{id}")
+    public Book findByID(@PathVariable Long id) {
         Book book = bookService.findById(id);
         return book;
     }
 
-    @PostMapping("/books/update/{id}")
+    @PutMapping("/books/{id}")
     public Book updateBook(@PathVariable Long id, @RequestBody Book book) {
         bookService.update(book);
         return book;
     }
 
-    @PostMapping("/books/delete/{id}")
-    public void deleteBook(@PathVariable("id") long id, Model model) {
+    @DeleteMapping("/books/{id}")
+    public void deleteBook(@PathVariable("id") long id) {
         bookService.delete(id);
     }
 }

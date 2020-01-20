@@ -1,5 +1,5 @@
     $(function () {
-        $.get('/api/books').done(function (books) {
+        $.get('/books').done(function (books) {
             books.forEach(function (book) {
                 $('tbody').append(`
                     <tr>
@@ -15,25 +15,22 @@
         })
     });
 
-
 function deleteBook(id) {
     if (confirm('Удалить книгу?')) {
         $.ajax({
-            url: "/books/delete/" + id,
-            type: "POST"
+            url: "/books/" + id,
+            type: "DELETE"
         }).done(function () {
             location.reload();
         });
     }
 }
 
-
-function newBook() {
+function loadAndDisplayFormForNewBookCreation() {
     $.ajax({
-        url: "Add_Book.html",
-        success: function (response) {
-                $('.content').html(response)
-        }
+        url: "add_book.html",
+        }).done(function (response) {
+            $("#content").html(response)
     });
 }
 
@@ -49,34 +46,34 @@ function addBook() {
              },
         }
     $.ajax({
-        url: "/books/add/",
+        url: "/books/",
         type: "POST",
         contentType: 'application/json',
         dataType: 'json',
-        data: JSON.stringify(book),
-        success: function (data) {
+        data: JSON.stringify(book)
+        }).done(function (data) {
                 location.reload();
-        }
-    })
+    });
 }
 
 function findBookByID(id) {
     $.ajax({
         url: "update_Book.html",
         success: function (response) {
-                $('.content').html(response)
+                $("#content").html(response)
         }
-    });
-    $.ajax({
-    url: "/books/update/" + id,
-    type: 'GET',
-    success: function(book) {
-        $("#bookID").val(book.id);
-        $("#GenreName-input").val(book.genre.name);
-        $("#AuthorName-input").val(book.author.name);
-        $("#AuthorSurName-input").val(book.author.surName);
-        $("#bookName").val(book.name);
-        }
+    }).done(function () {
+        $.ajax({
+        url: "/books/" + id,
+        type: 'GET',
+        success: function(book) {
+                    $("#bookID").val(book.id);
+                    $("#GenreName-input").val(book.genre.name);
+                    $("#AuthorName-input").val(book.author.name);
+                    $("#AuthorSurName-input").val(book.author.surName);
+                    $("#bookName").val(book.name);
+                 }
+        });
     });
 }
 
@@ -93,13 +90,12 @@ function updateBook() {
              },
         }
     $.ajax({
-        url: "/books/update/" + book.id,
-        type: "POST",
+        url: "/books/" + book.id,
+        type: "PUT",
         contentType: 'application/json',
         dataType: 'json',
         data: JSON.stringify(book),
-        success: function (book) {
-                location.reload();
-        }
-    })
+        }).done(function (data) {
+            location.reload();
+    });
 }
