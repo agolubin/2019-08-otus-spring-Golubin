@@ -1,5 +1,10 @@
     $(function () {
+        load();
+    });
+
+function load() {
         $.get('/books').done(function (books) {
+            $("tbody").empty();
             books.forEach(function (book) {
                 $('tbody').append(`
                     <tr>
@@ -13,7 +18,7 @@
                 `)
             });
         })
-    });
+}
 
 function deleteBook(id) {
     if (confirm('Удалить книгу?')) {
@@ -21,7 +26,7 @@ function deleteBook(id) {
             url: "/books/" + id,
             type: "DELETE"
         }).done(function () {
-            location.reload();
+            load();
         });
     }
 }
@@ -52,7 +57,7 @@ function addBook() {
         dataType: 'json',
         data: JSON.stringify(book)
         }).done(function (data) {
-                location.reload();
+            load();
     });
 }
 
@@ -96,6 +101,6 @@ function updateBook() {
         dataType: 'json',
         data: JSON.stringify(book),
         }).done(function (data) {
-            location.reload();
+            load();
     });
 }
